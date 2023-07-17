@@ -1,0 +1,206 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,200;0,400;0,500;1,100;1,200;1,400&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;1,100;1,300;1,400&display=swap'); */
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    font-family: "Josefin Sans", "Arial Narrow", Arial, sans-serif;
+}
+
+.header {
+    background: #6983aa;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.header button {
+    font-size: 25px;
+    padding: 5px;
+    border-radius: 10px;
+    border: 2px #3a1b5f solid;
+    margin-top: 5px;
+    margin-right: 10px;
+    background-color: #8566aa;
+    color: #3a1b5f;
+    box-shadow: none;
+    transition: all 400ms ease;
+}
+
+.header button:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+    box-shadow: 0px 15px 18px -5px rgba(0, 0, 0, 0.1);
+}
+
+.heading {
+    color: #3a1b5f;
+    margin-bottom: 20px;
+    font-size: 40px;
+    /* box-shadow: 0px 15px 18px -5px rgba(0, 0, 0, 0.1); */
+}
+
+body {
+    background: #6983aa;
+}
+
+.main_div {
+    width: 100%;
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.center_div {
+    width: 25%;
+    height: 80vh;
+    background-color: #f4f4f4;
+    box-shadow: 5px 5px 25px -5px rgba(0, 0, 0, 0.5);
+    border-radius: 15px;
+
+}
+
+.todo-heading {
+    color: white;
+    background: transparent;
+    background-color: #8566aa;
+    padding: 6px 0 2px 0;
+    margin-bottom: 10px;
+    box-shadow: 5px 5px 15px -5px rgba(0, 0, 0, 0.3);
+    font-size: 30px;
+}
+
+.todo-input {
+    text-align: center;
+    height: 30px;
+    top: 10px;
+    border: none;
+    background: transparent;
+    font-size: 20px;
+    font-weight: 500;
+    width: 60%;
+    border-bottom: 2px solid #8566aa;
+    outline: none;
+    text-transform: capitalize;
+}
+
+.todo-button {
+    min-height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    border-color: transparent;
+    background-color: #8566aa;
+    color: #fff;
+    font-size: 40px;
+    border: none;
+    outline: none;
+    margin-left: 10px;
+    box-sizing: 5px 5px 15px -5px rgba(0, 0, 0, 0.3);
+    transition: all 200ms ease;
+
+}
+
+.todo-button:hover {
+    background-color: #67bb6b;
+    transform: scale(1.05, 1.05);
+    box-shadow: 0px 15px 18px -5px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.todo-list {
+    margin-top: 30px;
+}
+
+li {
+    text-transform: capitalize;
+}
+
+.todo-item {
+    padding-left: 0px;
+    text-align: left;
+    font-size: 20px;
+    font-weight: 500;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    color: #8566aa;
+    text-transform: capitalize;
+}
+
+.todo_style {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+}
+
+.todo_style .fa-times {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #8566aa;
+    border-radius: 50%;
+    margin: 0 15px 0 35px;
+    color: aliceblue;
+    box-shadow: 5px 5px 15px -5px rgba(0, 0, 0, 0.3);
+}
+
+.todo_style .fa-times:hover .list_style {
+    color: red;
+}
+
+li {
+    list-style: none;
+}
+
+
+
+.wrapper {
+    display: flex;
+    /* justify-content: ; */
+    align-items: center;
+}
+
+.update-input {
+    height: 30px;
+}
+
+.cross {
+    font-size: 25px;
+    min-width: 25px;
+    min-height: 25px;
+    width: 25px;
+    margin-bottom: 8px;
+    margin-right: 10px;
+    transition: all 200ms ease;
+}
+
+.cross:hover {
+    background-color: rgb(232, 74, 74);
+}
+
+@media (max-width: 768px) {
+    .center_div {
+        width: 55%;
+    }
+
+    .todo_style .fa-times {
+        margin: 0 15px 0 15px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .todo-button {
+        margin-left: 5px;
+        min-height: 40px;
+        width: 40px;
+        color: #fff;
+        font-size: 30px;
+    }
+}
