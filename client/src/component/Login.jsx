@@ -2,7 +2,7 @@ import axios from 'axios';
 import './login-sign.css'
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-const BASE_URL = "https://note-app-2-xrrh.onrender.com"
+const BASE_URL = "https://note-app-da8z.onrender.com"
 const Login = () => {
     const history = useNavigate()
     const [user, setUser] = useState({

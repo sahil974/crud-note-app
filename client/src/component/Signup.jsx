@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
-const BASE_URL = "https://note-app-2-xrrh.onrender.com"
+const BASE_URL = "https://note-app-da8z.onrender.com"
 const Signup = () => {
     const history = useNavigate()
     const [user, setUser] = useState({

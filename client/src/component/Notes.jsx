@@ -4,7 +4,7 @@ import "./notes.css";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { LuEdit } from 'react-icons/lu';
 
-const BASE_URL = "https://note-app-2-xrrh.onrender.com"
+const BASE_URL = "https://note-app-da8z.onrender.com"
 
 const Notes = () => {
     const [updatedText, setUpdatedText] = useState('')
