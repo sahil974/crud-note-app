@@ -28,6 +28,7 @@ const schema = new mongoose.Schema({
         unique: true
     },
     password: { type: String, required: true },
+    cpassword: { type: String, required: true },
     notes: [String]
 })
 const collection = mongoose.model('notesLogincollection', schema)

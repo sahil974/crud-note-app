@@ -38,6 +38,11 @@ app.post("/signup", async (req, res) => {
     if (!isValidEmail) {
         return res.send("Invalid email address");
     }
+    if (!(user.password === user.cpassword)) {
+        console.log(user)
+        return res.send("notmatch")
+    }
+
 
     try {
         const check = await collection.findOne({ email: user.email });
@@ -56,9 +61,10 @@ app.post("/signup", async (req, res) => {
 });
 
 
-app.post("/note", async (req, res) => {
+app.post("/note/:email", async (req, res) => {
     // console.log(req.body)
-    const { email, newItem } = req.body
+    const email = req.params.email
+    const { newItem } = req.body
 
     try {
         const doc = await collection.findOne({ email: email })
@@ -74,15 +80,15 @@ app.post("/note", async (req, res) => {
             res.send("notadded")
         }
     } catch (err) {
-        // console.log(err);
-        res.status(500).send("Error")
+        console.log("error while note post " + err);
+        // res.status(500).send("Error")
     }
 
 })
 
-app.post("/notes", async (req, res) => {
+app.get("/note/:email", async (req, res) => {
 
-    const email = req.body.email
+    const email = req.params.email
     // console.log("email from frontend " + email)
     try {
         const doc = await collection.findOne({ email: email })
@@ -90,12 +96,13 @@ app.post("/notes", async (req, res) => {
         // console.log(doc.notes)
         res.send(doc.notes)
     } catch (err) {
-        // console.log(err)
+        console.log("error while note get : " + err)
     }
 })
 
-app.post("/note/delete", async (req, res) => {
-    const { id, email } = req.body
+app.delete("/note/:email/:id", async (req, res) => {
+    const email = req.params.email
+    const id = req.params.id
     try {
         const doc = await collection.findOne({ email: email })
         // console.log("before delete " + doc.notes)
@@ -105,13 +112,14 @@ app.post("/note/delete", async (req, res) => {
 
         res.send("deleted")
     } catch (err) {
-        console.log(err)
+        console.log("error while note delete : " + err)
         // res.send("err")
     }
 })
 
-app.post("/update", async (req, res) => {
-    const { id, email, updatedText } = req.body
+app.patch("/note/:email", async (req, res) => {
+    const email = req.params.email
+    const { id, updatedText } = req.body
 
     try {
         const doc = await collection.findOne({ email: email })
@@ -121,7 +129,7 @@ app.post("/update", async (req, res) => {
         // console.log("updated")
         res.send("updated")
     } catch (err) {
-        // console.log("error while updating : " + err)
+        console.log("error while note patch : " + err)
 
     }
 })

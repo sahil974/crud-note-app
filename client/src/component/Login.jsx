@@ -1,14 +1,19 @@
 import axios from 'axios';
-import './login-sign.css'
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-const BASE_URL = "https://note-app-da8z.onrender.com"
+import BASE_URL from './url';
+
 const Login = () => {
+    const [showPassword, setShowPassword] = useState(false);
     const history = useNavigate()
     const [user, setUser] = useState({
         email: "",
         password: ""
     })
+
+    const toggleShowPassword = () => {
+        setShowPassword((prevState) => !prevState);
+    };
 
     function changehandler(event) {
         const { name, value } = event.target
@@ -60,13 +65,17 @@ const Login = () => {
                             placeholder="Enter your email"
                             onChange={changehandler}
                         />
-                        <input
-                            type="password"
-                            name="password"
-                            className="signup-input-field"
-                            placeholder="Enter your password"
-                            onChange={changehandler}
-                        />
+                        <div className="password-container">
+                            <input
+                                type={showPassword ? 'text' : 'password'}
+                                name="password"
+                                className="signup-input-field password"
+                                placeholder="Enter your password"
+                                onChange={changehandler}
+                            />
+                            <i className={`fa-regular ${showPassword ? 'fa-eye' : 'fa-eye-slash'} eye-icon`} id='show-password'
+                                onClick={toggleShowPassword}></i>
+                        </div>
                         <button type="submit" className="signup-button" onClick={submit}>
                             Login
                         </button>

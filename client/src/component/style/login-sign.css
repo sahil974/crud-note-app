@@ -12,7 +12,7 @@
 }
 
 .login-container {
-    max-width: 300px;
+    max-width: 400px;
     width: 50%;
     margin: 0 auto;
     padding: 20px;
@@ -44,6 +44,21 @@
 
 .signup-input-field {
     border: 1px solid #dddddd;
+}
+
+.password-container {
+    position: relative;
+}
+
+.password {
+    width: 100%;
+}
+
+.eye-icon {
+    position: absolute;
+    right: 4%;
+    top: 20%;
+    cursor: pointer;
 }
 
 .signup-button {
@@ -84,4 +99,19 @@
 .link a:hover {
     /* transform: scale(1.05); */
     font-size: 19px;
+}
+
+
+
+@media (max-width: 768px) {
+    .login-container {
+        width: 55%;
+        /* height: ; */
+    }
+}
+
+@media (max-width: 412px) {
+    .login-container {
+        width: 70%;
+    }
 }

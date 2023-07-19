@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import "./notes.css";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { LuEdit } from 'react-icons/lu';
 
-const BASE_URL = "https://note-app-da8z.onrender.com"
+import BASE_URL from './url';
 
 const Notes = () => {
     const [updatedText, setUpdatedText] = useState('')
@@ -23,12 +22,12 @@ const Notes = () => {
             alert("Enter the task")
             return;
         }
-        await axios.post(BASE_URL + "/update", { id, email, updatedText })
+        await axios.patch(BASE_URL + "/note/" + email, { id, updatedText })
             .then((res) => {
                 if (res.data === "updated") {
                     // console.log("reload kr")
-                    // fetchNotes()
-                    window.location.reload()
+                    fetchNotes()
+                    // window.location.reload()
                 }
             })
             .catch((err) => {
@@ -50,7 +49,7 @@ const Notes = () => {
     const fetchNotes = async () => {
         try {
             // console.log(email)
-            await axios.post(BASE_URL + "/notes", { email })
+            await axios.get(BASE_URL + "/note/" + email)
                 .then((res) => {
                     // console.log(res.data)
                     setNota(res.data)
@@ -85,7 +84,7 @@ const Notes = () => {
             alert("Enter the task")
         else {
 
-            axios.post(BASE_URL + "/note", { email, newItem })
+            axios.post(BASE_URL + "/note/" + email, { newItem })
                 .then((res) => {
                     if (res.data === 'added') {
 
@@ -104,7 +103,7 @@ const Notes = () => {
 
     const deleteItem = async (id) => {
 
-        await axios.post(BASE_URL + "/note/delete", { id, email })
+        await axios.delete(BASE_URL + "/note/" + email + "/" + id)
             .then((res) => {
                 if (res.data === "deleted") {
 
@@ -148,19 +147,23 @@ const Notes = () => {
                     <ol className="todo-list">
                         {nota.map(function (ele, index) {
                             return (
-                                index === display ? <div key={index}>
-                                    <li>
-                                        <button
+                                index === display ?
+                                    <div key={index}>
+                                        <li className='update-container'>
+                                            {/* <button
                                             className='cross todo-button'
                                             onClick={function () {
                                                 deleteItem(index)
                                             }}
-                                        >x</button>
-                                        <input className='update-input' autoFocus style={{ height: "30px", padding: "5px", fontSize: '15px', textTransform: "capitalize" }} type="text" placeholder={ele} name='updatedText' onChange={(e) => setUpdatedText(e.target.value)} />
+                                        >x</button> */}
+                                            <input className='update-input' autoFocus style={{ height: "30px", padding: "5px", fontSize: '15px', textTransform: "capitalize" }} type="text" placeholder={ele} name='updatedText' onChange={(e) => setUpdatedText(e.target.value)} />
 
-                                        <button style={{ padding: '5px', margin: '5px' }} onClick={() => updateData(index)}>Update</button>
-                                    </li>
-                                </div> :
+                                            <div className="update-button-container">
+                                                <button onClick={() => updateData(index)}>Update</button>
+                                                <button onClick={() => setDisplay(-1)}>Cancel</button>
+                                            </div>
+                                        </li>
+                                    </div> :
                                     <div className="wrapper" key={index}>
                                         <div className='todo_style'>
                                             <button
