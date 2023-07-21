@@ -59,39 +59,40 @@ const Notes = () => {
     //     }
     // }
 
-    const auth = async () => {
-        console.log("auth checked")
-        // Step 1: Retrieve the token from localStorage
-        const token = localStorage.getItem('token')
-
-        if (token) {
-            // Step 2: Include the token in the request headers
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            }
-            // Step 3: Make a request to get user information using the token
-            axios.get(BASE_URL + '/note', config)
-                .then((res) => {
-                    const received = res.data
-                    // console.log(received)
-                    setNota(received.notes)
-                    setName(received.first_name)
-                    setEmail(received.email)
-                })
-                .catch((err) => {
-                    console.log('Error getting user information:', err);
-                })
-        } else {
-            navigate("/")
-        }
-    }
-
     useEffect(() => {
+
+        const auth = async () => {
+            console.log("auth checked")
+            // Step 1: Retrieve the token from localStorage
+            const token = localStorage.getItem('token')
+
+            if (token) {
+                // Step 2: Include the token in the request headers
+                const config = {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+                // Step 3: Make a request to get user information using the token
+                axios.get(BASE_URL + '/note', config)
+                    .then((res) => {
+                        const received = res.data
+                        // console.log(received)
+                        setNota(received.notes)
+                        setName(received.first_name)
+                        setEmail(received.email)
+                    })
+                    .catch((err) => {
+                        console.log('Error getting user information:', err);
+                    })
+            } else {
+                navigate("/")
+            }
+        }
+
         // fetchNotes()
         auth()
-    }, [])
+    }, [navigate])
 
     const [newItem, setNewItem] = useState('');
 

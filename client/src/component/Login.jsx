@@ -15,37 +15,38 @@ const Login = () => {
 
 
 
-    // Function to check if the token has expired
-    function isTokenExpired(token) {
-        try {
-            const decodedToken = jwt_decode(token);
-
-            // Check if the token is expired by comparing the current time with the expiration time
-            if (decodedToken && decodedToken.exp) {
-                const currentTime = Date.now() / 1000; // Convert to seconds (Unix timestamp)
-                return currentTime > decodedToken.exp;
-            }
-        } catch (error) {
-            // If decoding fails, consider the token as expired
-            console.error('Error decoding token:', error);
-        }
-
-        // If the token does not have an expiration time or decoding failed, consider it as expired
-        return true;
-    }
-
-    const ifToken = () => {
-        const token = localStorage.getItem("token")
-        // console.log(token)
-        if (token && !isTokenExpired(token)) {
-            navigate("/note")
-        }
-
-    }
 
     useEffect(() => {
+
+        // Function to check if the token has expired
+        function isTokenExpired(token) {
+            try {
+                const decodedToken = jwt_decode(token);
+
+                // Check if the token is expired by comparing the current time with the expiration time
+                if (decodedToken && decodedToken.exp) {
+                    const currentTime = Date.now() / 1000; // Convert to seconds (Unix timestamp)
+                    return currentTime > decodedToken.exp;
+                }
+            } catch (error) {
+                // If decoding fails, consider the token as expired
+                console.error('Error decoding token:', error);
+            }
+
+            // If the token does not have an expiration time or decoding failed, consider it as expired
+            return true;
+        }
+
+        const ifToken = () => {
+            const token = localStorage.getItem("token")
+            // console.log(token)
+            if (token && !isTokenExpired(token)) {
+                navigate("/note")
+            }
+
+        }
         ifToken()
-    }, [])
+    }, [navigate])
 
     const toggleShowPassword = () => {
         setShowPassword((prevState) => !prevState);
