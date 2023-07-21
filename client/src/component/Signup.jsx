@@ -7,7 +7,7 @@ const Signup = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showCpassword, setShowCpassword] = useState(false);
 
-    const history = useNavigate()
+    const navigate = useNavigate()
     const [user, setUser] = useState({
         first_name: "",
         last_name: "",
@@ -36,32 +36,33 @@ const Signup = () => {
 
     async function submit(event) {
         event.preventDefault()
-        try {
-            // console.log(user)
-            await axios.post(BASE_URL + "/signup", user)
-                .then((res) => {
-                    if (res.data === "alreadyexist") {
-                        alert("User already exists, Please Login")
-                    }
-                    else if (res.data === "Invalid email address") {
-                        alert("Invalid email address")
-                    }
-                    else if (res.data === "notmatch") {
-                        alert("Password Does not Match")
-                    }
-                    else {
-                        const { first_name, email } = res.data
-                        const passed = {
-                            first_name: first_name,
-                            email: email,
+        if (!user.first_name || !user.last_name || !user.email || !user.password || !user.cpassword) {
+            alert("Enter the deatils Properly")
+        }
+
+        else if (user.password !== user.cpassword)
+            alert("Password does not match !!")
+        else {
+
+            try {
+                // console.log(user)
+                await axios.post(BASE_URL + "/signup", user)
+                    .then((res) => {
+                        if (res.data === "alreadyexist") {
+                            alert("User already exists, Please Login")
                         }
-                        history("/note", { state: { id: passed } })
-                    }
-                })
-        } catch (err) {
-            // console.log("error while sighup " + err)
-            alert("Can't Signup")
-            console.log(err)
+                        else if (res.data === "Invalid email address")
+                            alert("Invalid Email Address")
+                        else {
+                            localStorage.setItem("token", res.data);
+                            navigate("/note")
+                        }
+                    })
+            } catch (err) {
+                // console.log("error while sighup " + err)
+                alert("Can't Signup")
+                console.log(err)
+            }
         }
     }
     return (

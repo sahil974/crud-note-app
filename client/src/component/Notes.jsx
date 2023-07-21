@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { LuEdit } from 'react-icons/lu';
 
 import BASE_URL from './url';
@@ -9,10 +9,12 @@ const Notes = () => {
     const [updatedText, setUpdatedText] = useState('')
 
 
-    const location = useLocation()
-    const history = useNavigate()
+    // const location = useLocation()
+    const navigate = useNavigate()
 
-    const { first_name, email } = location.state.id
+    // const { first_name, email } = location.state.id
+    const [email, setEmail] = useState(null)
+    const [name, setName] = useState(null)
     const [nota, setNota] = useState([])
 
     // console.log(nota)
@@ -24,11 +26,7 @@ const Notes = () => {
         }
         await axios.patch(BASE_URL + "/note/" + email, { id, updatedText })
             .then((res) => {
-                if (res.data === "updated") {
-                    // console.log("reload kr")
-                    fetchNotes()
-                    // window.location.reload()
-                }
+                setNota(res.data)
             })
             .catch((err) => {
                 // console.log(err)
@@ -36,6 +34,7 @@ const Notes = () => {
         setDisplay(-1)
 
     }
+
 
 
     const [display, setDisplay] = useState(-1)
@@ -46,23 +45,52 @@ const Notes = () => {
 
     }
 
-    const fetchNotes = async () => {
-        try {
-            // console.log(email)
-            await axios.get(BASE_URL + "/note/" + email)
-                .then((res) => {
-                    // console.log(res.data)
-                    setNota(res.data)
-                })
+    // const fetchNotes = async () => {
+    //     try {
+    //         // console.log(email)
+    //         await axios.get(BASE_URL + "/note/" + email)
+    //             .then((res) => {
+    //                 // console.log(res.data)
+    //                 setNota(res.data)
+    //             })
 
-        } catch (err) {
-            console.log(err)
+    //     } catch (err) {
+    //         console.log(err)
+    //     }
+    // }
+
+    const auth = async () => {
+        console.log("auth checked")
+        // Step 1: Retrieve the token from localStorage
+        const token = localStorage.getItem('token')
+
+        if (token) {
+            // Step 2: Include the token in the request headers
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+            // Step 3: Make a request to get user information using the token
+            axios.get(BASE_URL + '/note', config)
+                .then((res) => {
+                    const received = res.data
+                    // console.log(received)
+                    setNota(received.notes)
+                    setName(received.first_name)
+                    setEmail(received.email)
+                })
+                .catch((err) => {
+                    console.log('Error getting user information:', err);
+                })
+        } else {
+            navigate("/")
         }
     }
 
     useEffect(() => {
-        fetchNotes()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        // fetchNotes()
+        auth()
     }, [])
 
     const [newItem, setNewItem] = useState('');
@@ -75,7 +103,8 @@ const Notes = () => {
     }
 
     const handleLogout = () => {
-        history("/")
+        localStorage.removeItem("token")
+        navigate("/")
     };
 
 
@@ -131,7 +160,7 @@ const Notes = () => {
                 <button onClick={handleLogout} className="logout-button">Logout</button>
             </div>
             <div className="main_div">
-                <h1 className='heading'>Hello {first_name}</h1>
+                <h1 className='heading'>Hello {name}</h1>
                 <div className="center_div">
                     <br />
                     <h1 className="todo-heading">ToDo List</h1>

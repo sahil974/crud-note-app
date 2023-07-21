@@ -1,15 +1,51 @@
 import axios from 'axios';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import BASE_URL from './url';
+import jwt_decode from 'jwt-decode';
+
 
 const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
-    const history = useNavigate()
+    const navigate = useNavigate()
     const [user, setUser] = useState({
         email: "",
         password: ""
     })
+
+
+
+    // Function to check if the token has expired
+    function isTokenExpired(token) {
+        try {
+            const decodedToken = jwt_decode(token);
+
+            // Check if the token is expired by comparing the current time with the expiration time
+            if (decodedToken && decodedToken.exp) {
+                const currentTime = Date.now() / 1000; // Convert to seconds (Unix timestamp)
+                return currentTime > decodedToken.exp;
+            }
+        } catch (error) {
+            // If decoding fails, consider the token as expired
+            console.error('Error decoding token:', error);
+        }
+
+        // If the token does not have an expiration time or decoding failed, consider it as expired
+        return true;
+    }
+
+    const ifToken = () => {
+        const token = localStorage.getItem("token")
+        // console.log(token)
+        if (token && !isTokenExpired(token)) {
+            navigate("/note")
+        }
+
+    }
+
+    useEffect(() => {
+        ifToken()
+    }, [])
 
     const toggleShowPassword = () => {
         setShowPassword((prevState) => !prevState);
@@ -23,33 +59,26 @@ const Login = () => {
             [name]: value
         })
     }
+
     async function submit(event) {
         event.preventDefault();
-        try {
-            await axios.post(BASE_URL + "/", user)
-                .then((res) => {
-                    if (res.data === "notexist") {
-                        alert("Email does not exist , please signup")
-                    }
-                    else if (res.data === 'wrongpassword') {
-                        alert("Incorrect password")
-                    }
-                    else {
-                        const { first_name, email } = res.data
-                        const passed = {
-                            first_name: first_name,
-                            email: email,
-                        }
-                        history("/note", { state: { id: passed } })
-                    }
-
-                })
-                .catch((err) => {
-                    alert("wrong details")
-                    console.log(err)
-                })
-        } catch (err) {
-            console.log("opps cant send data to backend " + err)
+        if (user.email.trim() === "" || user.password.trim() === "") {
+            alert("Enter the details");
+        } else {
+            try {
+                const res = await axios.post(BASE_URL + "/", user);
+                if (res.data === "notexist") {
+                    alert("Email does not exist, please signup");
+                } else if (res.data === 'wrongpassword') {
+                    alert("Invalid Credentials");
+                } else {
+                    localStorage.setItem("token", res.data);
+                    // window.location = "/note";
+                    navigate("/note");
+                }
+            } catch (err) {
+                console.log("oops can't send data to the backend " + err);
+            }
         }
     }
     return (
