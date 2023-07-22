@@ -62,18 +62,18 @@ const Notes = () => {
     useEffect(() => {
 
         const auth = async () => {
-            console.log("auth checked")
-            // Step 1: Retrieve the token from localStorage
+            // console.log("auth checked")
+            // Retrieve the token from localStorage
             const token = localStorage.getItem('token')
 
             if (token) {
-                // Step 2: Include the token in the request headers
+                // Include the token in the request headers
                 const config = {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
                 }
-                // Step 3: Make a request to get user information using the token
+                // Make a request to get user information using the token
                 axios.get(BASE_URL + '/note', config)
                     .then((res) => {
                         const received = res.data
@@ -96,7 +96,7 @@ const Notes = () => {
 
     const [newItem, setNewItem] = useState('');
 
-    // const [items, setItems] = useState(nota);
+
 
     function changeHandler(event) {
         const value = event.target.value;
